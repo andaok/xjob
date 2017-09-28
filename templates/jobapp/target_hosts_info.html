@@ -187,6 +187,12 @@
                                  </td>
                             </tr>
                             <tr>
+                              <td style="vertical-align: middle;">用户:</td>
+                              <td>
+                                <input id="cmd_run_exec_user" name="cmd_run_exec_user" style="width:200px">
+                              </td>
+                            </tr>
+                            <tr>
                               <td colspan="2">
                                 <button id="cmd_run_btn" class="btn btn-primary btn-block">确认执行</button>
                               </td>
@@ -234,8 +240,24 @@
                                               });
                                           }
 
+                                          function load_exec_user_list() {
+                                                 $("#cmd_run_exec_user").kendoDropDownList({
+                                                     dataTextField: "UserName",
+                                                     dataValueField: "UserName",
+                                                     dataSource: {
+                                                         transport: {
+                                                             read: {
+                                                                dataType: "json",
+                                                                url: "/jobapp/execuser/name/show"
+                                                             }
+                                                         }
+                                                     }
+                                                 })
+                                          }
+
                                           $(document).ready(function() {
                                               load_files_list()
+                                              load_exec_user_list()
 
                                               var file_data = $("#source_file").data("kendoDropDownList")
                                               $("#delete_file_from_master_btn").click(function(){

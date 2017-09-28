@@ -37,4 +37,5 @@ urlpatterns = [
     url(r'^help/$',views.help,name="help"),
     url(r'^del_file/$',views.del_file,name="del_file"),
     url(r'^shortcut_search_host/$',views.shortcut_search_host,name="shortcut_search_host"),
+    url(r'^execuser/name/show/$',views.execuser_name_list,name="execuser_name_show"),
 ]

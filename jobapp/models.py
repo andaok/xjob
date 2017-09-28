@@ -18,6 +18,9 @@ class SaltGroup(models.Model):
 class action_audit(models.Model):
 	jid = models.CharField(max_length=255,unique=True)
 	user = models.CharField(max_length=50)
+
+class ExecUser(models.Model):
+	user = models.CharField(max_length=50,unique=True)
     
 
 

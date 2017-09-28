@@ -128,9 +128,9 @@ def test1():
 
 
 
-def cmd_run_job_execute_real(target_hosts_list,cmd):
+def cmd_run_job_execute_real(target_hosts_list,cmd,user):
     local = salt.client.LocalClient()
-    jid = local.cmd_async(target_hosts_list,'cmd.run',[cmd],expr_form='list',timeout=2)
+    jid = local.cmd_async(target_hosts_list,'cmd.run',[cmd],expr_form='list',timeout=2,kwarg={'runas':'%s'%user})
     return jid
 
 

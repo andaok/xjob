@@ -13,7 +13,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
-from jobapp.models import DynamicGroup , SaltGroup , action_audit
+from jobapp.models import DynamicGroup , SaltGroup , action_audit , ExecUser
 
 import os
 import json
@@ -587,6 +587,7 @@ def cmd_run_job_execute(request):
     user = request.user
     target_hosts = request.POST['show_target_hosts']
     cmd = request.POST['cmd_run_str']
+    user = request.POST['cmd_run_exec_user']
     cmd = cmd.replace("\r\n"," ")
     
     is_test = None
@@ -596,7 +597,7 @@ def cmd_run_job_execute(request):
 
     if is_test == None:
         # Real execute job
-        jid = cmd_run_job_execute_real(target_hosts_list,cmd)
+        jid = cmd_run_job_execute_real(target_hosts_list,cmd,user)
     else:
         # test execute job
         jid = cmd_run_job_execute_test(target_hosts_list,cmd)
@@ -731,6 +732,18 @@ def shortcut_search_host(request):
     return render(request,"jobapp/salt_group_hosts_info.html",{"hosts":hosts_list,"GroupName":keyWord})
 
 
+@login_required
+def execuser_name_list(request):
+    user = request.user
+    username_list = []
+    username_list.append({"UserName":"root"})
+    username_list.append({"UserName":"%s"%user})
+
+    other_users_obj = ExecUser.objects.order_by("id")
+    for user_obj in other_users_obj:
+        username_list.append({"UserName":"%s"%user_obj.user})
+
+    return JsonResponse(username_list,safe=False)
 
 # ----------------------
 # FOR DEBUG
