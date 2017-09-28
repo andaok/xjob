@@ -587,7 +587,7 @@ def cmd_run_job_execute(request):
     user = request.user
     target_hosts = request.POST['show_target_hosts']
     cmd = request.POST['cmd_run_str']
-    user = request.POST['cmd_run_exec_user']
+    exec_user = request.POST['cmd_run_exec_user']
     cmd = cmd.replace("\r\n"," ")
     
     is_test = None
@@ -597,7 +597,7 @@ def cmd_run_job_execute(request):
 
     if is_test == None:
         # Real execute job
-        jid = cmd_run_job_execute_real(target_hosts_list,cmd,user)
+        jid = cmd_run_job_execute_real(target_hosts_list,cmd,exec_user)
     else:
         # test execute job
         jid = cmd_run_job_execute_test(target_hosts_list,cmd)
