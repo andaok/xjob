@@ -1,5 +1,5 @@
 from django.contrib import admin
-from jobapp.models import DynamicGroup , SaltGroup , ExecUser
+from jobapp.models import DynamicGroup , SaltGroup , ExecUser, CustomScript
 # Register your models here.
 
 
@@ -7,4 +7,5 @@ from jobapp.models import DynamicGroup , SaltGroup , ExecUser
 admin.site.register(DynamicGroup)
 admin.site.register(SaltGroup)
 admin.site.register(ExecUser)
+admin.site.register(CustomScript)
 

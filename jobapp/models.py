@@ -19,9 +19,25 @@ class action_audit(models.Model):
 	jid = models.CharField(max_length=255,unique=True)
 	user = models.CharField(max_length=50)
 
+
 class ExecUser(models.Model):
 	user = models.CharField(max_length=50,unique=True)
-    
+
+
+class CustomScript(models.Model):
+	script_name = models.CharField(max_length=80)
+	author = models.CharField(max_length=50)
+	editor = models.CharField(max_length=50)
+	script_code = models.TextField()
+	script_type = models.CharField(max_length=15)
+	comment = models.TextField(null=True,blank=True) 
+
+	def __unicode__(self):
+		return self.script_name
+
+
+
+
 
 
 

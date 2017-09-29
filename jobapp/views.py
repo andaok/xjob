@@ -12,8 +12,9 @@ from django.contrib.auth import authenticate,login,logout
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 
-from jobapp.models import DynamicGroup , SaltGroup , action_audit , ExecUser
+from jobapp.models import DynamicGroup , SaltGroup , action_audit , ExecUser , CustomScript
 
 import os
 import json
@@ -745,19 +746,37 @@ def execuser_name_list(request):
 
     return JsonResponse(username_list,safe=False)
 
+
+@login_required
+def get_custom_script_list(request,page):
+    num_pageper = 3
+    script_list = CustomScript.objects.all()
+    paginator = Paginator(script_list,num_pageper)
+
+    try:
+        scripts = paginator.page(page)
+    except PageNotAnInteger:
+        scripts = paginator.page(1)
+    except EmptyPage:
+        scripts = paginator.page(paginator.num_pages)
+
+    print "xixixihahah is : %s"%scripts.paginator.num_pages
+    
+    return render(request,'jobapp/custom_script_show.html',{'scripts':scripts})
+
 # ----------------------
 # FOR DEBUG
 # ----------------------
 
 if __name__ == "__main__":
-    #print get_recent_failure_tasks_info(10)
+    # print get_recent_failure_tasks_info(10)
     # print get_recent_succss_tasks_info(10)
     # print get_recent_all_jobs_nums()
     # print get_recent_failure_tasks_nums()
     # print get_recent_success_tasks_nums()
     #get_failure_task_detail_info_test("20170518140245899698","W612-JENKDOCK-3")
     #print get_job_host_task_status("W612-JENKDOCK-4","20170523140452702260")
-    print json.loads(get_jid_info("20170608112713263763")[0][1])['arg']
+    #print json.loads(get_jid_info("20170608112713263763")[0][1])['arg']
     pass
 
 
