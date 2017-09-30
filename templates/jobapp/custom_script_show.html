@@ -5,11 +5,24 @@
     CustomScript
 {% endblock %}
 
+{% block extrahead_block %}
+   <script src="{% static 'codemirror-5.14.2/lib/codemirror.js' %}"></script>
+   <script src="{% static 'codemirror-5.14.2/mode/shell/shell.js' %}"></script>
+   <script src="{% static 'codemirror-5.14.2/mode/python/python.js' %}"></script>
+   <script src="{% static 'codemirror-5.14.2/addon/display/fullscreen.js' %}"></script>
+
+   <link rel="stylesheet" href="{% static 'codemirror-5.14.2/lib/codemirror.css' %}" />
+   <link rel="stylesheet" href="{% static 'codemirror-5.14.2/theme/erlang-dark.css' %}" />
+   <link rel="stylesheet" href="{% static 'codemirror-5.14.2/addon/display/fullscreen.css' %}" />
+{% endblock %}
+
 {% block main_block%}
    
-    
-    <div style="margin-top:15px;"><h6 style="color: rgb(0, 132, 228)">Custom Scripts</h6></div>
-    <div class="table-responsive">
+    <div style="margin-top:6px;">
+        <!-- <h6 style="color: rgb(0, 132, 228)">Custom Scripts</h6> -->
+        <button type="button" class="btn btn-primary" id="script_create_btn" href="#script_create_window" data-toggle="modal">创建脚本</button>
+    </div>
+    <div class="table-responsive" style="margin-top:10px;">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -18,6 +31,7 @@
                     <td>Author</td>
                     <td>Editor</td>
                     <td>ScriptType</td>
+                    <td>Manage</td>
                 </tr>
             </thead>
             <tbody>
@@ -29,12 +43,17 @@
                     <td>{{ item.author }}</td>
                     <td>{{ item.editor }}</td>
                     <td>{{ item.script_type }}</td>
+                    <td>
+                        <a class="btn btn-outline-success my-2 my-sm-0"  role="button" id="{{ item.id }}" name="script_edit_btn" >编辑</a>
+                        <a class="btn btn-outline-success my-2 my-sm-0"  role="button" id="{{ item.id }}" name="script_delete_btn">删除</a>
+                    </td>
                 </tr>
             {% endfor %}
 
             </tbody>
         </table>
     </div>
+    <div>
         <nav>
         <ul class="pagination justify-content-end">
             
@@ -72,7 +91,130 @@
 
         </ul>
         </nav>
+    </div>
 
+
+    <!-- custom script window -->
+    <div class="modal fade" id="script_create_window" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg">
+        <form method="post" action="{% url 'jobapp:custom_script_save' %}">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h6 class="modal-title" id="myModalLabel1">Custom Script Create</h6>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body" id="ShowFailTaskDetailInfoDiv">
+            <form method="post" action="{% url 'jobapp:custom_script_save' %}">
+            {% csrf_token %}
+                <table class="table table-striped table-condensed table-border" style="margin-top:15px;">
+                    <tr>
+                        <td>脚本名称:</td>
+                        <td><input class="form-control" type="text" name="script_name" style="width: 300px"></td>
+                    </tr>
+                    <tr>
+                        <td>脚本类型:</td>
+                        <td>
+                            <label class="custom-control custom-radio">
+                              <input name="script_type" id="script_type_shell" value="shell" type="radio" class="custom-control-input" checked>
+                              <span class="custom-control-indicator"></span>
+                              <span class="custom-control-description">Shell</span>
+                            </label>
+                            <label class="custom-control custom-radio">
+                              <input name="script_type" id="script_type_python" value="python" type="radio" class="custom-control-input">
+                              <span class="custom-control-indicator"></span>
+                              <span class="custom-control-description">Python</span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <textarea id="editor" name="editor"></textarea>
+                        </td>
+                    </tr>
+                </table>
+            
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" id="script_save_btn">保存</button>
+        </div>
+        </div>
+        </form>
+      </div>
+    </div>
+
+    <div>
+        <textarea id="test" name="test"></textarea>
+    </div>
+
+    <script type="text/javascript">
+
+   
+        function init_code_editor(editor_id,init_val) {
+            var myTextarea = document.getElementById(editor_id);
+            var CodeMirrorEditor = CodeMirror.fromTextArea(myTextarea, {
+                mode: "text/javascript",
+                lineNumbers:true,
+                theme:"erlang-dark",
+                value:init_val
+            });
+            return CodeMirrorEditor
+        }
+
+        
+        $(document).ready(function(){
+            
+            var shell_script_template = '\
+#!/bin/bash\n\
+\n\
+# 脚本说明\n\
+# -------------------------------------------\n\
+# \n\
+# 参数说明\n\
+# -------------------------------------------\n\
+#\n\
+# 注意事项\n\
+# -------------------------------------------\n\
+#\n\
+\n\
+exit 0\n\
+'
+
+           var python_script_template = '\
+#!/usr/bin/python\n\
+\n\
+# 脚本说明\n\
+# -------------------------------------------\n\
+# \n\
+# 参数说明\n\
+# -------------------------------------------\n\
+#\n\
+# 注意事项\n\
+# -------------------------------------------\n\
+#\n\
+\n\
+import sys\n\
+sys.exit(0)\
+'
+           
+           CodeMirrorEditor1 = init_code_editor("test",shell_script_template)
+           CodeMirrorEditor1.setValue("zxcxzcx") 
+
+           $("#script_type_shell").click(function(){
+                CodeMirrorEditor.setValue(shell_script_template)
+           })
+   
+           $("#script_type_python").click(function(){
+                CodeMirrorEditor.setValue(python_script_template)
+           })
+            
+
+        })
+    </script>
+
+    <style type="text/css">
+        .CodeMirror{border:1px solid black;font-size:15px;width:750px;height:600px}
+    </style>
 
 {% endblock %}
 

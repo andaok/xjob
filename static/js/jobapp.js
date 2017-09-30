@@ -45,8 +45,8 @@ function ajaxCommand(url,option,id) {
 }
 
 
-
 $(document).ready(function(){
+
 	$("#execute").click(function(){
 		$.ajax({
 			type: "POST",
@@ -58,7 +58,5 @@ $(document).ready(function(){
 		})
 	})
 
-	$("#tmp_execute").click(function(){
-           alert("hello world")
-	})
+	
 });

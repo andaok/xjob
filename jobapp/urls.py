@@ -39,4 +39,5 @@ urlpatterns = [
     url(r'^shortcut_search_host/$',views.shortcut_search_host,name="shortcut_search_host"),
     url(r'^execuser/name/show/$',views.execuser_name_list,name="execuser_name_show"),
     url(r'^show/customscript/(?P<page>[\w\-]+)/$',views.get_custom_script_list,name="show_custom_script"),
+    url(r'^customscript/save/$',views.custom_script_save,name="custom_script_save"),
 ]

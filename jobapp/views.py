@@ -764,6 +764,10 @@ def get_custom_script_list(request,page):
     
     return render(request,'jobapp/custom_script_show.html',{'scripts':scripts})
 
+@login_required
+def custom_script_save(request):
+    pass
+
 # ----------------------
 # FOR DEBUG
 # ----------------------
