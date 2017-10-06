@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^saltgroup/del/id/$',views.salt_group_del_record_by_id,name="salt_group_del_record_by_id"),
     url(r'^salt_group_hosts_info/$',views.salt_group_hosts_info,name="salt_group_hosts_info"),
     url(r'^cmd_run_job_execute/$',views.cmd_run_job_execute,name="cmd_run_job_execute"),
+    url(r'^cmd_script_job_execute/$',views.cmd_script_job_execute,name="cmd_script_job_execute"),
     url(r'^upload_file_job_execute/$',views.upload_file_job_execute,name="upload_file_job_execute"),
     url(r'^upload/$',views.upload,name="upload"),
     url(r'^user/files/show/$',views.user_dir_files_list,name="user_files_show"),
@@ -38,6 +39,11 @@ urlpatterns = [
     url(r'^del_file/$',views.del_file,name="del_file"),
     url(r'^shortcut_search_host/$',views.shortcut_search_host,name="shortcut_search_host"),
     url(r'^execuser/name/show/$',views.execuser_name_list,name="execuser_name_show"),
+    url(r'^get/customscript/args/$',views.get_script_args,name="get_script_args"),
     url(r'^show/customscript/(?P<page>[\w\-]+)/$',views.get_custom_script_list,name="show_custom_script"),
-    url(r'^customscript/save/$',views.custom_script_save,name="custom_script_save"),
+    url(r'^create/customscript/$',views.create_custom_script,name="create_custom_script"),
+    url(r'^edit/customscript/(?P<id>[\w\-]+)/$',views.edit_custom_script,name="edit_custom_script"),
+    url(r'^all/customscript/$',views.custom_scripts_all,name="custom_scripts_all"),
+    url(r'^save/customscript/$',views.save_custom_script,name="save_custom_script"),
+
 ]

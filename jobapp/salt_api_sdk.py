@@ -153,6 +153,15 @@ def get_file_stats(host,file_path):
     return resp
 
 
+def cmd_script_job_execute_real(target_hosts_list,script_local_name,script_args,user):
+    local = salt.client.LocalClient()
+    jid = local.cmd_async(target_hosts_list,'cmd.script',["salt://scripts/%s"%script_local_name,script_args],expr_form='list',kwarg={'runas':'%s'%user})
+    return jid
+    
+def cmd_script_job_execute_test(target_hosts_list,script_local_name,script_args,user):
+    local = salt.client.LocalClient()
+    resp = local.cmd(target_hosts_list,'cmd.script',["salt://scripts/%s"%script_local_name,script_args],kwarg={'runas':'%s'%user})
+    print resp
 
 if __name__ == "__main__":
 
@@ -162,10 +171,17 @@ if __name__ == "__main__":
     # print master_opts['keep_jobs']
 
     # # salt client interface,execute salt cli cmd.
-    import salt.client
-    local = salt.client.LocalClient()
-    resp = local.cmd('*','cmd.run',["whoami && pwd"],kwarg={'runas':'securityadmin'})
-    print resp
+    # import salt.client
+    # local = salt.client.LocalClient()
+    # resp = local.cmd('*','cmd.run',["whoami && pwd"],kwarg={'runas':'root'})
+    # print resp
+
+    # import salt.client
+    # local = salt.client.LocalClient()
+    # resp = local.cmd('*','cmd.script',["salt://scripts/test.sh","45 56 67"],kwarg={'runas':'root'})
+    # print resp
+
+    # cmd_script_job_execute_real(["node101"],"Lweiye_1507302302_22.sh","hello world","root")
 
     # # execute salt cli async cmd
     # import salt.client
@@ -198,4 +214,6 @@ if __name__ == "__main__":
     #print get_salt_group_hosts("S@172.16.4.136")
     #print test1()
     #print get_file_stats("W612-JENKDOCK-3","/tmp/test.txt")
+    import os
+    os.system("sed -i 's/\r$//' %s"%("/srv/salt/scripts/Lweiye_1507304729_22.sh"))
     pass

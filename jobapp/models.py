@@ -25,10 +25,11 @@ class ExecUser(models.Model):
 
 
 class CustomScript(models.Model):
-	script_name = models.CharField(max_length=80)
+	script_name = models.CharField(max_length=80,unique=True)
 	author = models.CharField(max_length=50)
 	editor = models.CharField(max_length=50)
 	script_code = models.TextField()
+	script_args = models.CharField(max_length=80,null=True,blank=True)
 	script_type = models.CharField(max_length=15)
 	comment = models.TextField(null=True,blank=True) 
 

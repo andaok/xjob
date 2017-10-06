@@ -17,12 +17,15 @@ from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from jobapp.models import DynamicGroup , SaltGroup , action_audit , ExecUser , CustomScript
 
 import os
+import sys
+import time
 import json
 import MySQLdb
 from salt_api_sdk import *
 from bk_cmdb_api import *
 
-
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 # -----------------------------------------
 # MYSQL SERVER INFO
@@ -750,7 +753,8 @@ def execuser_name_list(request):
 @login_required
 def get_custom_script_list(request,page):
     num_pageper = 3
-    script_list = CustomScript.objects.all()
+    #script_list = CustomScript.objects.all()
+    script_list = CustomScript.objects.order_by("-id")
     paginator = Paginator(script_list,num_pageper)
 
     try:
@@ -764,9 +768,93 @@ def get_custom_script_list(request,page):
     
     return render(request,'jobapp/custom_script_show.html',{'scripts':scripts})
 
+
 @login_required
-def custom_script_save(request):
-    pass
+def create_custom_script(request):
+    return  render(request,'jobapp/create_custom_script.html',{})
+
+
+@login_required
+def get_script_args(request):
+    id = request.GET.get("id")
+    script_obj = CustomScript.objects.get(id=id)
+    script_args = script_obj.script_args
+    return JsonResponse({'script_args':script_args},safe=False)
+
+
+@login_required
+def edit_custom_script(request,id):
+    script_obj = CustomScript.objects.get(id=id)
+    script_name = script_obj.script_name
+    script_type = script_obj.script_type
+    script_code = script_obj.script_code
+    script_args = script_obj.script_args
+
+    return  render(request,'jobapp/create_custom_script.html',{'script_name':script_name,'script_type':script_type,'script_code':script_code,'script_args':script_args,'script_id':id})
+
+
+@login_required
+def save_custom_script(request):
+
+    script_name = request.POST.get("script_name")
+    script_type = request.POST.get("script_type")
+    script_code = request.POST.get("editor")
+    script_args = request.POST.get("script_args").strip()
+
+    if request.POST.get("script_id"):
+        id = request.POST.get("script_id")
+        script_obj = CustomScript.objects.get(id=id)
+        script_obj.script_code = script_code
+        script_obj.script_args = script_args
+        script_obj.script_type = script_type
+        script_obj.editor = "%s"%request.user
+        script_obj.save()
+    else:
+        author = request.user
+        editor = author
+
+        custom_script_obj = CustomScript(script_name=script_name,author=author,editor=editor,script_code=script_code,script_args=script_args,script_type=script_type)
+        custom_script_obj.save()
+    
+    return get_custom_script_list(request,1)
+
+
+@login_required
+def custom_scripts_all(request):
+    scripts_obj = CustomScript.objects.order_by("-id")
+    script_list = []
+    for script_obj in scripts_obj:
+        script = {'id':script_obj.id,'script_name':script_obj.script_name}
+        script_list.append(script)
+        
+    return JsonResponse(script_list,safe=False)
+ 
+
+@login_required
+def cmd_script_job_execute(request):
+    target_hosts = request.POST.get("show_target_hosts")
+    script_id = request.POST.get("script_id")
+    script_args = request.POST.get("cmd_script_args")
+    script_exec_user = request.POST.get("cmd_script_exec_user")
+
+    target_hosts_list = target_hosts.split(",")
+
+    script_obj = CustomScript.objects.get(id=script_id)
+    script_code = script_obj.script_code
+    script_type = script_obj.script_type
+
+    script_dir = "/srv/salt/scripts"
+    script_local_name = "%s_%s_%s"%(request.user,int(time.time()),script_id) + ".%s"%(script_type[0:2])
+    script_local_path = script_dir + os.sep + script_local_name
+    
+    with open(script_local_path,'w') as file_obj:
+        file_obj.write(script_code)
+
+    os.system("sed -i 's/\r$//' %s"%script_local_path)
+    
+    jid = cmd_script_job_execute_real(target_hosts_list,script_local_name,script_args,script_exec_user)
+
+    return JsonResponse({'jid':jid},safe=False)
 
 # ----------------------
 # FOR DEBUG
