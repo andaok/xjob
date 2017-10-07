@@ -34,6 +34,7 @@ urlpatterns = [
     url(r'^user/files/show/$',views.user_dir_files_list,name="user_files_show"),
     url(r'^get_upload_job_hosts_task_status/$',views.get_upload_job_hosts_task_status,name="get_upload_job_hosts_task_status"),
     url(r'^get_upload_file_progress/$',views.get_upload_file_progress,name="get_upload_file_progress"),
+    url(r'^get_script_job_hosts_task_status/$',views.get_script_job_hosts_task_status,name="get_script_job_hosts_task_status"),
     url(r'^audit/$',views.audit,name="audit"),
     url(r'^help/$',views.help,name="help"),
     url(r'^del_file/$',views.del_file,name="del_file"),

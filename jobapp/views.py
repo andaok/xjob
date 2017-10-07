@@ -136,6 +136,18 @@ def get_upload_job_host_task_status(host,jid):
 
 
 
+def get_script_job_host_task_status(host,jid):
+    sql = "select full_ret from salt_returns where jid='%s' and id='%s'"%(jid,host)
+    Records_num, Records_tuple = execute_sql(sql)
+    if Records_num == 0 or Records_num == None:
+        status = None
+    else:
+        status = json.loads(Records_tuple[0][0])['return']
+
+    return status
+
+
+
 def job_host_task_info(host,jid):
     sql = "select full_ret from salt_returns where jid='%s' and id='%s'"%(jid,host)
     _, Records_tuple = execute_sql(sql)
@@ -377,6 +389,34 @@ def get_upload_job_hosts_task_status(request):
     
     return JsonResponse(hosts_status,safe=False)    
 
+
+@login_required
+def get_script_job_hosts_task_status(request):
+    hosts = request.GET['hosts']
+    jid = request.GET['jid']
+    
+    host_list = hosts.split(",")
+    hosts_status = []
+
+    for host in host_list:
+        
+        status = get_script_job_host_task_status(host,jid)
+
+        if status != None:
+            if isinstance(status,dict):
+                pid = status["pid"]
+                retcode = status["retcode"]
+                stderr = status["stderr"]
+                stdout = status["stdout"]
+            else:
+                pid = ""
+                retcode = 1
+                stderr = status
+                stdout = ""
+            host_status = {'host':host,'pid':pid,'retcode':retcode,'stderr':stderr,'stdout':stdout}
+            hosts_status.append(host_status)
+    
+    return JsonResponse(hosts_status,safe=False)    
 
 
 @login_required
@@ -838,6 +878,7 @@ def cmd_script_job_execute(request):
     script_exec_user = request.POST.get("cmd_script_exec_user")
 
     target_hosts_list = target_hosts.split(",")
+    target_hosts_num = len(target_hosts_list)
 
     script_obj = CustomScript.objects.get(id=script_id)
     script_code = script_obj.script_code
@@ -854,7 +895,10 @@ def cmd_script_job_execute(request):
     
     jid = cmd_script_job_execute_real(target_hosts_list,script_local_name,script_args,script_exec_user)
 
-    return JsonResponse({'jid':jid},safe=False)
+    write_audit_info(jid,request.user)
+
+    return render(request,'jobapp/cmd_script_result_show.html',{"target_hosts_list":target_hosts_list,"target_hosts_num":target_hosts_num,"jid":jid})
+
 
 # ----------------------
 # FOR DEBUG
@@ -869,6 +913,7 @@ if __name__ == "__main__":
     #get_failure_task_detail_info_test("20170518140245899698","W612-JENKDOCK-3")
     #print get_job_host_task_status("W612-JENKDOCK-4","20170523140452702260")
     #print json.loads(get_jid_info("20170608112713263763")[0][1])['arg']
+    #get_script_job_host_task_status("node101","20171007001810839593")["stdout"]
     pass
 
 
