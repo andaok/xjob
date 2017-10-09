@@ -613,6 +613,8 @@ def salt_group_hosts_info(request):
 
     hosts_list = []
 
+    print("resp is %s"%resp)
+
     for hostname , host_obj in resp.iteritems():
         host = {}
         host["HostName"] = hostname
@@ -661,6 +663,8 @@ def upload_file_job_execute(request):
     source_file_name = request.POST.get("source_file")
     target_hosts = request.POST.get("show_target_hosts")
     dest_dir = request.POST.get("dest_dir")
+    exec_user = request.POST.get("upload_file_exec_user")
+
 
     target_hosts_list = target_hosts.split(",")
     target_hosts_num = len(target_hosts_list)
@@ -669,7 +673,7 @@ def upload_file_job_execute(request):
     
     source_file_size = os.path.getsize(source_file_path)/1024/1024
 
-    jid = upload_file(target_hosts_list,user,source_file_name,dest_file_path)
+    jid = upload_file(target_hosts_list,user,source_file_name,dest_file_path,exec_user)
 
     write_audit_info(jid,user)
     

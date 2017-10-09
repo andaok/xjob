@@ -141,9 +141,9 @@ def cmd_run_job_execute_test(target_hosts_list,cmd):
     return jid
 
 
-def upload_file(target_hosts_list,user,source_file_name,dest_file_path):
+def upload_file(target_hosts_list,user,source_file_name,dest_file_path,exec_user):
     local = salt.client.LocalClient()
-    jid = local.cmd_async(target_hosts_list,'cp.get_file',['salt://%s/%s'%(user,source_file_name),dest_file_path,'makedirs=true','gzip=5'],expr_form='list',timeout=2)
+    jid = local.cmd_async(target_hosts_list,'cp.get_file',['salt://%s/%s'%(user,source_file_name),dest_file_path,'makedirs=true','gzip=5'],expr_form='list',kwarg={'runas':'%s'%exec_user})
     return  jid
 
 
