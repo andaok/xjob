@@ -792,7 +792,7 @@ def execuser_name_list(request):
 
 @login_required
 def get_custom_script_list(request,page):
-    num_pageper = 3
+    num_pageper = 6
     #script_list = CustomScript.objects.all()
     script_list = CustomScript.objects.order_by("-id")
     paginator = Paginator(script_list,num_pageper)
@@ -804,9 +804,24 @@ def get_custom_script_list(request,page):
     except EmptyPage:
         scripts = paginator.page(paginator.num_pages)
 
-    print "xixixihahah is : %s"%scripts.paginator.num_pages
     
     return render(request,'jobapp/custom_script_show.html',{'scripts':scripts})
+
+
+@login_required
+def get_system_user_list(request,page):
+    num_pageper = 10
+    user_list = ExecUser.objects.order_by("-id")
+    paginator = Paginator(user_list,num_pageper)
+
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+
+    return render(request,'jobapp/system_user_manage.html',{'users':users})
 
 
 @login_required
@@ -856,7 +871,8 @@ def save_custom_script(request):
         custom_script_obj = CustomScript(script_name=script_name,author=author,editor=editor,script_code=script_code,script_args=script_args,script_type=script_type)
         custom_script_obj.save()
     
-    return get_custom_script_list(request,1)
+    #return get_custom_script_list(request,1)
+    return HttpResponseRedirect("/jobapp/show/customscript/1/")
 
 
 @login_required
@@ -900,6 +916,28 @@ def cmd_script_job_execute(request):
     return render(request,'jobapp/cmd_script_result_show.html',{"target_hosts_list":target_hosts_list,"target_hosts_num":target_hosts_num,"jid":jid})
 
 
+@login_required
+def system_user_save(request):
+    user = request.POST.get("system_user_name").strip()
+    user_obj = ExecUser(user=user)
+    user_obj.save()   
+
+    return HttpResponseRedirect("/jobapp/systemuser/manage/1/")
+ 
+
+@login_required
+def system_user_del(request):
+    id = request.GET.get("id")
+    ExecUser.objects.filter(id=id).delete()
+    return JsonResponse({},safe=False)
+
+
+@login_required
+def del_custom_script(request):
+    id = request.GET.get("id")
+    CustomScript.objects.filter(id=id).delete()
+    return JsonResponse({},safe=False)
+    
 # ----------------------
 # FOR DEBUG
 # ----------------------

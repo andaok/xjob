@@ -369,6 +369,14 @@
                                                   })
                                               })
 
+                                              $("#cmd_script_btn").click(function(){
+                                                   var id = $("#cmd_script_name").val()
+                                                   if (id == "" || id == null) {
+                                                       $('#job_exec_tip_inter').html("<font color='red'><strong>请选择脚本！</strong></font>")
+                                                       return false
+                                                   }
+                                              })
+
                                           });
                                       </script>
 

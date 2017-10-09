@@ -21,7 +21,6 @@
     <div style="margin-top:6px;">
         <!-- <h6 style="color: rgb(0, 132, 228)">Custom Scripts</h6> -->
         <a  type="button" class="btn btn-primary" id="script_create_btn" href="{% url 'jobapp:create_custom_script' %}">创建脚本</a>
-        <button type="button" class="btn btn-primary" id="script_import_btn" href="#script_import_window" data-toggle="modal">导入脚本</button>
     </div>
     <div class="table-responsive" style="margin-top:10px;">
         <table class="table table-striped">
@@ -94,7 +93,43 @@
         </nav>
     </div>
 
+    <div id="dialog">
+        <input type="hidden" id="script_id">
+    </div>
 
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            var dialog = $("#dialog");
+            var script_id = ""
+            dialog.kendoDialog({
+                width: "400px",
+                title: "Custom Scripts Manage",
+                closable: true,
+                modal: true,
+                content: "是否确定删除这个脚本?",
+                actions: [
+                   { text: "确认", action: onOK},
+                   { text: "取消"}
+                ]
+            });
+
+            function onOK(e) {
+
+                $.get("{% url 'jobapp:del_custom_script' %}",{id:script_id},function(){
+                     window.location.reload()
+                })
+            }
+ 
+            dialog.data("kendoDialog").close();
+
+            $('a[name="script_delete_btn"]').click(function(){
+                script_id = $(this).attr("val")
+                dialog.data("kendoDialog").open();
+            })
+
+        })
+    </script>
 
 {% endblock %}
 

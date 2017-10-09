@@ -29,7 +29,7 @@
     <script src="{% static 'kendoui/js/kendo.ui.core.min.js' %}"></script>
     <script src="{% static 'kendoui/js/kendo.combobox.min.js' %}"></script>
     <script src="{% static 'kendoui/js/kendo.upload.min.js' %}"></script>
-    
+    <script src="{% static 'kendoui/js/kendo.dialog.min.js' %}"></script>
 
     {% block extrahead_block %}
     {% endblock %}
@@ -114,7 +114,10 @@
               <a class="nav-link active" href="#">配置管理</a>
            </li>
            <li class="nav-item">
-              <a class="nav-link" href="{% url 'jobapp:show_custom_script' 1 %}"> - 自定义脚本</a>
+              <a class="nav-link" href="{% url 'jobapp:show_custom_script' 1 %}"> - 自定义脚本管理</a>
+           </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'jobapp:system_user_manage' 1 %}"> - 系统用户管理</a>
            </li>
         </ul>
 

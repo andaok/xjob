@@ -42,9 +42,12 @@ urlpatterns = [
     url(r'^execuser/name/show/$',views.execuser_name_list,name="execuser_name_show"),
     url(r'^get/customscript/args/$',views.get_script_args,name="get_script_args"),
     url(r'^show/customscript/(?P<page>[\w\-]+)/$',views.get_custom_script_list,name="show_custom_script"),
+    url(r'^systemuser/manage/(?P<page>[\w\-]+)/$',views.get_system_user_list,name="system_user_manage"),
+    url(r'^systemuser/save/$',views.system_user_save,name="system_user_save"),
+    url(r'^systemuser/del/$',views.system_user_del,name="system_user_del"),
     url(r'^create/customscript/$',views.create_custom_script,name="create_custom_script"),
     url(r'^edit/customscript/(?P<id>[\w\-]+)/$',views.edit_custom_script,name="edit_custom_script"),
     url(r'^all/customscript/$',views.custom_scripts_all,name="custom_scripts_all"),
     url(r'^save/customscript/$',views.save_custom_script,name="save_custom_script"),
-
+    url(r'^del/customscript/$',views.del_custom_script,name="del_custom_script")
 ]
