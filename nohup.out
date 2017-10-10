@@ -1,0 +1,68 @@
+
+Error: class uri 'gevent' invalid or not found: 
+
+[Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/gunicorn/util.py", line 134, in load_class
+    mod = import_module('.'.join(components))
+  File "/usr/lib64/python2.7/importlib/__init__.py", line 37, in import_module
+    __import__(name)
+  File "/usr/lib/python2.7/site-packages/gunicorn/workers/ggevent.py", line 22, in <module>
+    raise RuntimeError("You need gevent installed to use this worker.")
+RuntimeError: You need gevent installed to use this worker.
+]
+
+Traceback (most recent call last):
+  File "/home/vagrant/share/xjob/jobapp/salt_api_sdk.py", line 38, in myHandler
+    raise AssertionError
+AssertionError
+Tue Oct 10 02:33:05 2017
+Traceback (most recent call last):
+  File "/home/vagrant/share/xjob/jobapp/salt_api_sdk.py", line 38, in myHandler
+    raise AssertionError
+AssertionError
+Tue Oct 10 02:33:30 2017
+Traceback (most recent call last):
+  File "/home/vagrant/share/xjob/jobapp/salt_api_sdk.py", line 38, in myHandler
+    raise AssertionError
+AssertionError
+Tue Oct 10 02:33:56 2017
+Traceback (most recent call last):
+  File "/home/vagrant/share/xjob/jobapp/salt_api_sdk.py", line 38, in myHandler
+    raise AssertionError
+AssertionError
+Tue Oct 10 02:33:58 2017
+Traceback (most recent call last):
+  File "/home/vagrant/share/xjob/jobapp/salt_api_sdk.py", line 38, in myHandler
+    raise AssertionError
+AssertionError
+Tue Oct 10 02:34:04 2017
+Traceback (most recent call last):
+  File "/home/vagrant/share/xjob/jobapp/salt_api_sdk.py", line 38, in myHandler
+    raise AssertionError
+AssertionError
+Tue Oct 10 02:34:15 2017
+Traceback (most recent call last):
+  File "/home/vagrant/share/xjob/jobapp/salt_api_sdk.py", line 38, in myHandler
+    raise AssertionError
+AssertionError
+Tue Oct 10 02:34:17 2017
+Traceback (most recent call last):
+  File "/home/vagrant/share/xjob/jobapp/salt_api_sdk.py", line 38, in myHandler
+    raise AssertionError
+AssertionError
+Tue Oct 10 02:34:29 2017
+Traceback (most recent call last):
+  File "/home/vagrant/share/xjob/jobapp/salt_api_sdk.py", line 38, in myHandler
+    raise AssertionError
+AssertionError
+Tue Oct 10 02:34:31 2017
+Traceback (most recent call last):
+  File "/home/vagrant/share/xjob/jobapp/salt_api_sdk.py", line 38, in myHandler
+    raise AssertionError
+AssertionError
+Tue Oct 10 02:36:43 2017
+Traceback (most recent call last):
+  File "/home/vagrant/share/xjob/jobapp/salt_api_sdk.py", line 38, in myHandler
+    raise AssertionError
+AssertionError
+Tue Oct 10 02:36:45 2017

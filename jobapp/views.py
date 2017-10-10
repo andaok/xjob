@@ -616,12 +616,18 @@ def salt_group_hosts_info(request):
     print("resp is %s"%resp)
 
     for hostname , host_obj in resp.iteritems():
-        host = {}
-        host["HostName"] = hostname
-        host["status"] = 1
-        host['osname_salt'] = host_obj['os'] + " " + host_obj['osrelease']
-        host['ip_salt'] = '|'.join(host_obj['ipv4'])
-        hosts_list.append(host)
+        if host_obj:
+            host = {}
+            host["HostName"] = hostname
+            host["status"] = 1
+            host['osname_salt'] = host_obj['os'] + " " + host_obj['osrelease']
+            host['ip_salt'] = '|'.join(host_obj['ipv4'])
+            hosts_list.append(host)
+        else:
+            host = {}
+            host["HostName"] = hostname
+            host["status"] = 0
+            hosts_list.append(host)
 
     return render(request,"jobapp/salt_group_hosts_info.html",{"hosts":hosts_list,"GroupName":group_name})
 
@@ -663,7 +669,6 @@ def upload_file_job_execute(request):
     source_file_name = request.POST.get("source_file")
     target_hosts = request.POST.get("show_target_hosts")
     dest_dir = request.POST.get("dest_dir")
-    exec_user = request.POST.get("upload_file_exec_user")
 
 
     target_hosts_list = target_hosts.split(",")
@@ -673,7 +678,7 @@ def upload_file_job_execute(request):
     
     source_file_size = os.path.getsize(source_file_path)/1024/1024
 
-    jid = upload_file(target_hosts_list,user,source_file_name,dest_file_path,exec_user)
+    jid = upload_file(target_hosts_list,user,source_file_name,dest_file_path)
 
     write_audit_info(jid,user)
     
