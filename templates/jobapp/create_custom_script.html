@@ -24,6 +24,7 @@
          <form method="post" action="{% url 'jobapp:save_custom_script' %}">
             {% csrf_token %}
                 <button type="submit" class="btn btn-primary" id="script_save_btn" name="script_save_btn">保存脚本</button>
+                <a  type="button" class="btn btn-primary" href="{% url 'jobapp:show_custom_script' 1 %}">返回</a>
                 <table class="table table-striped table-condensed table-border" style="margin-top:15px;">
                     <tr>
                         <td>脚本名称:</td>
