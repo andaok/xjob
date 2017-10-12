@@ -211,9 +211,12 @@ if __name__ == "__main__":
     #print get_host_meta_info("W612-JENKDOCK-3")
     #print get_host_status("BGP-NETAM-01")
     #init_sys_env(["W612-JENKDOCK-3","W612-JENKDOCK-4"])
-    #print get_salt_group_hosts("S@172.16.4.136")
+    #x = get_salt_group_hosts("S@192.168.1.101")
+    #x = get_salt_group_hosts("G@nodename:node102")
+    #print("x is %s"%x)
+    #if x:print("find")
     #print test1()
     #print get_file_stats("W612-JENKDOCK-3","/tmp/test.txt")
-    import os
-    os.system("sed -i 's/\r$//' %s"%("/srv/salt/scripts/Lweiye_1507304729_22.sh"))
+    #import os
+    #os.system("sed -i 's/\r$//' %s"%("/srv/salt/scripts/Lweiye_1507304729_22.sh"))
     pass

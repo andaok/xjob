@@ -763,13 +763,20 @@ def del_file(request):
 
 @login_required
 def shortcut_search_host(request):
-    keyWord = request.GET.get("keyWord")
-    type = request.GET.get("type")
+    keyWord = request.GET.get("search_key_word")
     
-    if type == "ip":group_expr = "S@"+keyWord
-    if type == "hostname":group_expr = "G@nodename:"+keyWord
- 
-    resp = get_salt_group_hosts(group_expr)
+    group_expr = []
+    # if keyWord is hostname
+    group_expr.append("G@nodename:"+keyWord)
+    # if keyWord is ip
+    group_expr.append("S@"+keyWord)
+
+    for tgt_type in group_expr:
+        resp = get_salt_group_hosts(tgt_type)
+        if resp:
+            break
+        else:
+            continue
 
     hosts_list = []
 
