@@ -189,6 +189,8 @@
             if (keyWord == "") {
                $("#search_key_word").attr('placeholder',"IP地址或主机名不得为空！")
                return false
+            } else {
+               $("#tip_window").modal('show')
             }
       })
 
@@ -896,6 +898,25 @@
       </div>
    </div>
   <!-- popup box 5 end -->
+
+  <!-- test -->
+    <div class="modal fade" id="tip_window" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="modal-title" id="myModalLabel1"></h6>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+          <div class="modal-body">
+            <img src="{% static 'images/loading2.gif'%}" height="70" width="70">
+             <strong>请等待!......</strong>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+   </div>
+<!-- test end   --> 
 
 
 
