@@ -92,7 +92,7 @@
 			} else {
                 hosts = hosts.substr(0,hosts.length-1)
                 // -----------------------------------------
-                $.getJSON('/jobapp/get_upload_job_hosts_task_status/',{hosts:hosts,jid:jid},function(data,status){
+                $.post('/jobapp/get_upload_job_hosts_task_status/',{hosts:hosts,jid:jid},function(data,status){
                 	if (data != "") {
                 	    DataArray = eval(data)
                 	    for (i in DataArray) {
@@ -123,11 +123,13 @@
 
                 	}
 
-                })
+                },
+                "json"
+                );
                 // -----------------------------------------
 
                 // ------------------------------------------
-                $.getJSON('/jobapp/get_upload_file_progress/',{hosts:hosts,jid:jid,source_file_name:source_file_name,dest_file_path:dest_file_path},function(data,status){
+                $.post('/jobapp/get_upload_file_progress/',{hosts:hosts,jid:jid,source_file_name:source_file_name,dest_file_path:dest_file_path},function(data,status){
                       if (data != "") {
                       	 DataArray = eval(data)
                       	 for (i in DataArray) {
@@ -136,7 +138,9 @@
                 		   $("td[val="+host+"_prog]").html("<font color='green'><strong>"+prog+"%</strong></font>")
                       	 }
                       }
-                })
+                },
+                "json"
+                );
                 // ------------------------------------------
 
 

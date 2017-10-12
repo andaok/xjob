@@ -110,7 +110,7 @@
 				clearInterval(IntChkObj)
 			} else {
                 hosts = hosts.substr(0,hosts.length-1)
-                $.getJSON('/jobapp/get_job_hosts_task_status/',{hosts:hosts,jid:jid},function(data,status){
+                $.post('/jobapp/get_job_hosts_task_status/',{hosts:hosts,jid:jid},function(data,status){
                 	if (data != "") {
                 	    DataArray = eval(data)
                 	    for (i in DataArray) {
@@ -141,7 +141,9 @@
 
                 	}
 
-                })
+                },
+                "json"
+                );
 			}
 		}
 

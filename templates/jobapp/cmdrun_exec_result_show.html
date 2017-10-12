@@ -62,7 +62,7 @@
                 for (i in hosts_array) {
                      host = hosts_array[i]
           
-                     $.getJSON('/jobapp/get_job_host_task_info/',{host:host,jid:jid},function(data){
+                     $.post('/jobapp/get_job_host_task_info/',{host:host,jid:jid},function(data){
                      	
                      	 if (data != "") {
 	                         DataArray = eval(data)
@@ -98,7 +98,9 @@
                                
                          }
 
-                     });
+                     },
+                     "json"
+                     );
                 }
                 $.ajaxSettings.async = true;
                 

@@ -341,26 +341,21 @@ def state_sls_job_execute(request):
 
 
 @login_required
+@csrf_exempt
 def get_job_hosts_task_status(request):
-    hosts = request.GET['hosts']
-    jid = request.GET['jid']
+    hosts = request.POST['hosts']
+    jid = request.POST['jid']
     
     host_list = hosts.split(",")
     hosts_status = []
-
-    print "host_list is %s"%host_list
 
     for host in host_list:
         
         status = get_job_host_task_status(host,jid)
 
-        print "info is %s %s %s"%(host , jid ,status)
-
         if status != None:
             host_status = {'host':host,'status':status}
             hosts_status.append(host_status)
-    
-    print "hosts_status is %s"%hosts_status
 
     #hosts_status = [{'host':'w26','status':1},{'host':'456','status':0}]
 
@@ -370,9 +365,10 @@ def get_job_hosts_task_status(request):
 
 
 @login_required
+@csrf_exempt
 def get_upload_job_hosts_task_status(request):
-    hosts = request.GET['hosts']
-    jid = request.GET['jid']
+    hosts = request.POST['hosts']
+    jid = request.POST['jid']
     
     host_list = hosts.split(",")
     hosts_status = []
@@ -391,9 +387,10 @@ def get_upload_job_hosts_task_status(request):
 
 
 @login_required
+@csrf_exempt
 def get_script_job_hosts_task_status(request):
-    hosts = request.GET['hosts']
-    jid = request.GET['jid']
+    hosts = request.POST['hosts']
+    jid = request.POST['jid']
     
     host_list = hosts.split(",")
     hosts_status = []
@@ -420,14 +417,15 @@ def get_script_job_hosts_task_status(request):
 
 
 @login_required
+@csrf_exempt
 def get_upload_file_progress(request):
     user = request.user
     user_dir = "/srv/salt/upload_files/%s/"%user
 
-    hosts = request.GET['hosts']
-    jid = request.GET['jid']
-    source_file_name = request.GET["source_file_name"]
-    dest_file_path = request.GET["dest_file_path"]
+    hosts = request.POST['hosts']
+    jid = request.POST['jid']
+    source_file_name = request.POST["source_file_name"]
+    dest_file_path = request.POST["dest_file_path"]
  
     source_file_path = os.path.join(user_dir,source_file_name)
     source_file_size = os.path.getsize(source_file_path)
@@ -449,9 +447,10 @@ def get_upload_file_progress(request):
 
 
 @login_required
+@csrf_exempt
 def get_job_host_task_info(request):
-    host = request.GET['host']
-    jid = request.GET['jid']
+    host = request.POST['host']
+    jid = request.POST['jid']
     info = job_host_task_info(host,jid)
     return JsonResponse([{"info":info}],safe=False)
 
@@ -462,7 +461,7 @@ def dynamic_group_manage(request):
     group_name = request.GET.get("group_name")
     group_members = request.GET.get("group_members")
 
-    print "info is %s - %s"%(group_name,group_members)
+    #print "info is %s - %s"%(group_name,group_members)
 
     group_members_list = group_members.split(",")
     group_members_list = list(set(group_members_list))
@@ -613,7 +612,7 @@ def salt_group_hosts_info(request):
 
     hosts_list = []
 
-    print("resp is %s"%resp)
+    #print("resp is %s"%resp)
 
     for hostname , host_obj in resp.iteritems():
         if host_obj:
@@ -725,7 +724,7 @@ def user_dir_files_list(request):
 
 @login_required
 def audit(request):
-    actions_obj = action_audit.objects.order_by("-id")
+    actions_obj = action_audit.objects.order_by("-id")[:50]
     action_info_list = []
     for  action_obj in actions_obj:
         jid = action_obj.jid
