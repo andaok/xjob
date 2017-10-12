@@ -897,7 +897,7 @@ def custom_scripts_all(request):
 @login_required
 def cmd_script_job_execute(request):
     target_hosts = request.POST.get("show_target_hosts")
-    script_id = request.POST.get("script_id")
+    script_id = request.POST.get("cmd_script_name")
     script_args = request.POST.get("cmd_script_args")
     script_exec_user = request.POST.get("cmd_script_exec_user")
 
