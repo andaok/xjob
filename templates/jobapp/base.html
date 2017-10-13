@@ -14,10 +14,22 @@
 	Job -{% block title_block %}{% endblock %}
     </title>
 
+    <!--
     <!-- Bootstrap core CSS -->
-    <link href="{% static 'css/bootstrap.min.css'%}" rel="stylesheet">
+    <!-- <link href="{% static 'css/bootstrap.min.css'%}" rel="stylesheet"> -->
     <!-- Custom styles for this template -->
-    <link href="{% static 'css/dashboard.css'%}" rel="stylesheet">
+    <!-- <link href="{% static 'css/dashboard.css'%}" rel="stylesheet"> -->
+
+    <!-- for style1 -->
+
+    <!-- Bootstrap core CSS-->
+    <link href="{% static 'style1/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'style1/vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <!-- Page level plugin CSS-->
+    <link href="{% static 'style1/vendor/datatables/dataTables.bootstrap4.css' %}" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="{% static 'style1/css/sb-admin.css' %}" rel="stylesheet">
 
     <!-- for kendoui -->
 
@@ -36,124 +48,144 @@
 
     </head>
 
-    <body>
+    <body class="fixed-nav sticky-footer bg-dark" id="page-top">
     
-    <!-- PART ONE -->
-    <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
-	
-      <button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-	  
-      <a class="navbar-brand" href="#">作业系统 V1.5</a>
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <a class="navbar-brand" href="index.html">JOB SYSTEM V1.5</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Overview">
+          <a class="nav-link" href="{% url 'jobapp:index' %}">
+            <i class="fa fa-fw fa-dashboard"></i>
+            <span class="nav-link-text">Overview</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Audit">
+          <a class="nav-link" href="{% url 'jobapp:audit'%}">
+            <i class="fa fa-fw fa-user"></i>
+            <span class="nav-link-text">Audit</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Help">
+          <a class="nav-link" href="{% url 'jobapp:help'%}">
+            <i class="fa fa-fw fa-link"></i>
+            <span class="nav-link-text">Help</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Select Target">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
+            <i class="fa fa-fw fa-search"></i>
+            <span class="nav-link-text">Select Target</span>
+          </a>
+          <ul class="sidenav-second-level collapse" id="collapseComponents">
+            <li>
+              <a class="nav-link" href="#select_target_cmdb" data-toggle="modal">From Cmdb</a>
+            </li>
+            <li>
+              <a class="nav-link" href="#select_target_salt" data-toggle="modal">From Salt Group</a>
+            </li>
+            <li>
+              <a class="nav-link" href="#select_target_dynamic" data-toggle="modal">From Dynamic Group</a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Group Manage">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseExamplePages" data-parent="#exampleAccordion">
+            <i class="fa fa-fw fa-sitemap"></i>
+            <span class="nav-link-text">Group Manage</span>
+          </a>
+          <ul class="sidenav-second-level collapse" id="collapseExamplePages">
+            <li>
+              <a class="nav-link" href="#salt_group_manage" data-toggle="modal">Salt Group</a>
+            </li>
+            <li>
+              <a class="nav-link" href="#dynamic_group_manage" data-toggle="modal">Dynamic Group</a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Config Manage">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
+            <i class="fa fa-fw fa-wrench"></i>
+            <span class="nav-link-text">Config Manage</span>
+          </a>
+          <ul class="sidenav-second-level collapse" id="collapseMulti">
+            <li>
+              <a class="nav-link" href="{% url 'jobapp:show_custom_script' 1 %}">Custom Script</a>
+            </li>
+            <li>
+              <a class="nav-link" href="{% url 'jobapp:system_user_manage' 1 %}">System User</a>
+            </li>
+          </ul>
+        </li>
 
-      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-
-      <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="http://cmdb.quark.com" target="_blank">Cmdb <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'jobapp:help'%}">Help</a>
-          </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#LinkMulti" data-parent="#exampleAccordion">
+            <i class="fa fa-fw fa-external-link"></i>
+            <span class="nav-link-text">Link</span>
+          </a>
+          <ul class="sidenav-second-level collapse" id="LinkMulti">
+            <li>
+              <a class="nav-link" href="http://cmdb.quark.com" target="_blank">Cmdb System</a>
+            </li>
+            <li>
+              <a class="nav-link" href="http://zbx.quark.com" target="_blank">Zabbix System</a>
+            </li>
+          </ul>
+        </li>
       </ul>
 
-      <form class="form-inline mt-2 mt-md-0" style="margin-right:30px" action="{% url 'jobapp:shortcut_search_host' %}">
-          <input class="form-control mr-sm-2" type="text" id="search_key_word" name="search_key_word" placeholder="Search Host">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="search_btn">Search</button>
-      </form>
-	  
-      <div class="form-inline mt-2 mt-md-0">
-			{% if user.is_authenticated %}
-				<a href="{% url 'jobapp:logout'%}"><font color="#FFFFFF">Logout</font></a>
-			{% else %}
-				<a href="{% url 'jobapp:login'%}"><font color="#FFFFFF">Login</font></a>
-			{% endif %}
-	    </div>
-		
-      </div>
+      <ul class="navbar-nav sidenav-toggler">
+        <li class="nav-item">
+          <a class="nav-link text-center" id="sidenavToggler">
+            <i class="fa fa-fw fa-angle-left"></i>
+          </a>
+        </li>
+      </ul>
 
-    </nav>
-
-    <div class="container-fluid">
-      <div class="row">
-	  
-	<!-- PART TWO -->
-        <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
-			{% block sidebar_block %}
-                              <ul class="nav nav-pills flex-column">
-                                <li class="nav-item">
-                                  <a class="nav-link active" href="#">作业状态</a>
-                                </li>
-                                <li class="nav-item">
-                                  <a class="nav-link" href="{% url 'jobapp:index' %}"> - 作业概览</a>
-                                </li>
-                                <li class="nav-item">
-                                  <a class="nav-link" href="{% url 'jobapp:audit'%}"> - 作业审计</a>
-                                </li>                                
-                             </ul>
-                             <hr/>
-        <ul class="nav nav-pills flex-column">
-				   <li class="nav-item">
-				      <a class="nav-link active" href="#">目标选取</a>
-				   </li>
-           <li class="nav-item">
-              <a class="nav-link" href="#select_target_cmdb" data-toggle="modal"> - CMDB目标选取</a> 
-           </li>
-           <li class="nav-item">
-              <a class="nav-link" href="#select_target_salt" data-toggle="modal"> - SALT分组目标选取</a>
-           </li>
-           <li class="nav-item">
-              <a class="nav-link" href="#select_target_dynamic" data-toggle="modal"> - 动态分组目标选取</a>
-           </li>
-			  </ul>
-			  <hr>
-
-        <ul class="nav nav-pills flex-column">
-           <li class="nav-item">
-              <a class="nav-link active" href="#">分组管理</a>
-           </li>
-           <li class="nav-item">
-              <a class="nav-link" href="#salt_group_manage" data-toggle="modal"> - SALT分组管理</a>
-           </li>
-           <li class="nav-item">
-              <a class="nav-link" href="#dynamic_group_manage" data-toggle="modal"> - 动态分组管理</a>
-           </li>
-        </ul>
-
-        <ul class="nav nav-pills flex-column">
-           <li class="nav-item">
-              <a class="nav-link active" href="#">配置管理</a>
-           </li>
-           <li class="nav-item">
-              <a class="nav-link" href="{% url 'jobapp:show_custom_script' 1 %}"> - 自定义脚本管理</a>
-           </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'jobapp:system_user_manage' 1 %}"> - 系统用户管理</a>
-           </li>
-        </ul>
-
-        <hr>
-        <ul class="nav nav-pills flex-column" >
-           <li class="nav-item">
-              <a class="nav-link active" href="#"> 链接 </a>
-           </li>
-            <li class="nav-item">
-              <a class="nav-link" href="http://cmdb.quark.com" target="_blank" > - CMDB系统 </a>
-           </li>
-        </ul>
-        
-			{% endblock %}
-        </nav>
-    
-		<!-- PART THREE -->
-        <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
-            {% block main_block %}
-	          {% endblock %}           
-        </main>
-		
-      </div>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <form class="form-inline my-2 my-lg-0 mr-lg-2" action="{% url 'jobapp:shortcut_search_host' %}">
+            <div class="input-group">
+              <input class="form-control" type="text" id="search_key_word" name="search_key_word" placeholder="Search Host ...">
+              <span class="input-group-btn">
+                <button class="btn btn-primary" type="submit" id="search_btn">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+          </form>
+        </li>
+        <li class="nav-item">
+          {% if user.is_authenticated %}
+              <a class="nav-link" href="{% url 'jobapp:logout'%}"><i class="fa fa-fw fa-sign-out"></i>Logout</a>
+          {% else %}
+              <a class="nav-link" href="{% url 'jobapp:login'%}"><i class="fa fa-fw fa-sign-out"></i>Login</a>
+          {% endif %}
+        </li>
+      </ul>
     </div>
+  </nav>
+
+  <div class="content-wrapper">
+    <div class="container-fluid">
+       {% block main_block %}
+       {% endblock %}  
+    </div>
+    <footer class="sticky-footer">
+      <div class="container">
+        <div class="text-center">
+          <small>Copyright © Quark Finance 2017</small>
+        </div>
+      </div>
+    </footer>
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fa fa-angle-up"></i>
+    </a>
+  </div> 
 
     <script type="text/javascript">
     $(document).ready(function() {
@@ -317,8 +349,8 @@
                     });
                 });
             </script>
-</div>
-          <!-- end-->
+    </div>
+    <!-- end-->
 
 
           </div>
@@ -330,11 +362,10 @@
         </div>
       </div>
    </div>
-    <!-- popup box 1 end   --> 
+  <!-- popup box 1 end   --> 
 
-  <!-- ------------------------------------------------------- -->
 
-  <! -- popup box 2 sart -->
+  <!-- popup box 2 sart  -->
   <div class="modal fade" id="dynamic_group_manage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-lg" style="height:900px; overflow:scroll;">
         <div class="modal-content">
@@ -916,7 +947,7 @@
         </div>
       </div>
    </div>
-<!-- test end   --> 
+  <!-- test end   --> 
 
 
 
@@ -932,5 +963,22 @@
 	  <script>
       $(function () { $("[data-toggle='tooltip']").tooltip(); });
     </script>
+
+    <!-- Bootstrap core JavaScript-->
+    <!-- <script src="{% static 'style1/vendor/jquery/jquery.min.js' %}"></script> -->
+    <script src="{% static 'style1/vendor/popper/popper.min.js' %}"></script>
+    <!-- <script src="{% static 'style1/vendor/bootstrap/js/bootstrap.min.js' %}"></script> -->
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'style1/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+    <!-- Page level plugin JavaScript-->
+    <script src="{% static 'style1/vendor/chart.js/Chart.min.js' %}"></script>
+    <script src="{% static 'style1/vendor/datatables/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'style1/vendor/datatables/dataTables.bootstrap4.js' %}"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'style1/js/sb-admin.min.js' %}"></script>
+    <!-- Custom scripts for this page-->
+    <script src="{% static 'style1/js/sb-admin-datatables.min.js' %}"></script>
+    <script src="{% static 'style1/js/sb-admin-charts.min.js' %}"></script>
+    
     </body>
 </html>
