@@ -242,8 +242,10 @@ def target_hosts_info(request):
             pass
 
     target_hosts_info['hosts'] = hosts_list
-    
-    return render(request,'jobapp/target_hosts_info.html',target_hosts_info)
+    target_hosts_info['GroupName'] = "%s/%s/%s"%(appname,setname,modulename)
+    target_hosts_info['datasource'] = "Cmdb"
+
+    return render(request,"jobapp/salt_group_hosts_info.html",target_hosts_info)
 
 
 def hostname_base_bking_module(request):
@@ -542,7 +544,7 @@ def dynamic_group_hosts_info(request):
             pass
         hosts_list.append(host)
 
-    return render(request,'jobapp/dynamic_group_hosts_info.html',{"hosts":hosts_list,"GroupName":GroupName})
+    return render(request,"jobapp/salt_group_hosts_info.html",{"hosts":hosts_list,"GroupName":GroupName,"datasource":"DynamicGroup"})
 
 
 
@@ -628,8 +630,7 @@ def salt_group_hosts_info(request):
             host["status"] = 0
             hosts_list.append(host)
 
-    return render(request,"jobapp/salt_group_hosts_info.html",{"hosts":hosts_list,"GroupName":group_name})
-
+    return render(request,"jobapp/salt_group_hosts_info.html",{"hosts":hosts_list,"GroupName":group_name,"datasource":"SaltGroup"})
 
 
 
@@ -788,7 +789,7 @@ def shortcut_search_host(request):
         host['ip_salt'] = '|'.join(host_obj['ipv4'])
         hosts_list.append(host)
 
-    return render(request,"jobapp/salt_group_hosts_info.html",{"hosts":hosts_list,"GroupName":keyWord})
+    return render(request,"jobapp/salt_group_hosts_info.html",{"hosts":hosts_list,"GroupName":keyWord,"datasource":"Host"})
 
 
 @login_required
@@ -800,7 +801,7 @@ def execuser_name_list(request):
 
     other_users_obj = ExecUser.objects.order_by("id")
     for user_obj in other_users_obj:
-        username_list.append({"UserName":"%s"%user_obj.user})
+        username_list.append({"UserName":"%s"%user_obj.user,"UserID":user_obj.id})
 
     return JsonResponse(username_list,safe=False)
 
@@ -943,11 +944,14 @@ def cmd_script_job_execute(request):
 
 @login_required
 def system_user_save(request):
-    user = request.POST.get("system_user_name").strip()
-    user_obj = ExecUser(user=user)
-    user_obj.save()   
 
-    return HttpResponseRedirect("/jobapp/systemuser/manage/1/")
+    data = request.GET.get("models")
+    data_dict = json.loads(data)
+    UserName = data_dict[0]["UserName"]
+    user_obj = ExecUser(user=UserName)
+    user_obj.save() 
+
+    return JsonResponse({"UserName":user_obj.user,"UserID":user_obj.id})
  
 
 @login_required
@@ -962,6 +966,44 @@ def del_custom_script(request):
     id = request.GET.get("id")
     CustomScript.objects.filter(id=id).delete()
     return JsonResponse({},safe=False)
+
+
+# ------------ for test -----------------------
+
+@login_required
+def test(request):
+    return render(request,'jobapp/test.html',{})
+
+
+@login_required
+def test_read(request):
+    user = request.user
+    username_list = []
+    username_list.append({"UserName":"root"})
+    username_list.append({"UserName":"%s"%user})
+
+    other_users_obj = ExecUser.objects.order_by("id")
+    for user_obj in other_users_obj:
+        username_list.append({"UserName":"%s"%user_obj.user,"UserID":user_obj.id})
+
+    return JsonResponse(username_list,safe=False)
+
+
+@login_required
+def test_create(request):
+    data = request.GET.get("models")
+    data_dict = json.loads(data)
+    print("UserName is %s"%data_dict[0]["UserName"])
+    UserName = data_dict[0]["UserName"]
+
+    user_obj = ExecUser(user=UserName)
+    user_obj.save() 
+
+    print("id is %s"%user_obj.id) 
+
+    return JsonResponse({"UserName":user_obj.user,"UserID":user_obj.id})
+    
+# ----------- test -----------------------------
     
 # ----------------------
 # FOR DEBUG

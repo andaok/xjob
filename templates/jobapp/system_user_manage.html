@@ -10,7 +10,7 @@
    
     <div style="margin-top:6px;">
         <!-- <h6 style="color: rgb(0, 132, 228)">Custom users</h6> -->
-        <a  type="button" class="btn btn-primary" id="user_create_btn" href="#system_user_manage_window" data-toggle="modal">添加系统用户</a>
+        <input id="users_manage" style="width: 400px;" />
     </div>
     <div class="table-responsive" style="margin-top:10px;">
         <table class="table table-striped">
@@ -87,7 +87,7 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           </div>
           <div class="modal-body">
-            <input type="text" class="form-control" id="system_user_name" name="system_user_name">        
+            <input type="text" class="form-control" id="system_user_name" name="system_user_name">
           </div>
           <div class="modal-footer">
            <button type="submit" class="btn btn-primary" id="user_save_btn" name="user_save_btn">确认</button>
@@ -117,6 +117,15 @@
                 }
             })
         })
+    </script>
+
+    <script id="noDataTemplate" type="text/x-kendo-tmpl">
+        <div>
+            找不到这个用户，你想添加该用户吗？ - '#: instance.filterInput.val() #' ?
+        </div>
+        <br />
+
+        <button class="k-button" onclick="addNew('#: instance.element[0].id #', '#: instance.filterInput.val() #')">add new user</button>
     </script>
 
 {% endblock %}

@@ -49,5 +49,8 @@ urlpatterns = [
     url(r'^edit/customscript/(?P<id>[\w\-]+)/$',views.edit_custom_script,name="edit_custom_script"),
     url(r'^all/customscript/$',views.custom_scripts_all,name="custom_scripts_all"),
     url(r'^save/customscript/$',views.save_custom_script,name="save_custom_script"),
-    url(r'^del/customscript/$',views.del_custom_script,name="del_custom_script")
+    url(r'^del/customscript/$',views.del_custom_script,name="del_custom_script"),
+    url(r'^test/$',views.test,name="test"),
+    url(r'^test_read/$',views.test_read,name="test_read"),
+    url(r'^test_create/$',views.test_create,name="test_create"),
 ]

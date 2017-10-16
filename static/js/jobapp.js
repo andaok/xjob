@@ -45,18 +45,77 @@ function ajaxCommand(url,option,id) {
 }
 
 
+// --------
+        function addNew(widgetId, value) {
+            var widget = $("#" + widgetId).getKendoDropDownList();
+            var dataSource = widget.dataSource;
+
+            if (confirm("Are you sure?")) {
+                dataSource.add({
+                    UserID: 0,
+                    UserName: value
+                });
+
+                dataSource.one("sync", function() {
+                    widget.select(dataSource.view().length - 1);
+                });
+
+                dataSource.sync();
+            }
+        };
+
+        function users_onClose(e) {
+        	window.location.reload()
+        }
+
+// --------
+
+
 $(document).ready(function(){
 
-	$("#execute").click(function(){
-		$.ajax({
-			type: "POST",
-            url: "/jobapp/execute/",
-            data: $("#form_execute").serialize(),
-            success: function(data){
-            	$("#instances").html(data);
+    var users_dataSource = new kendo.data.DataSource({
+        batch: true,
+        transport: {
+            read:  {
+                url: "/jobapp/execuser/name/show",
+                dataType: "json"
+            },
+            create: {
+                url: "/jobapp/systemuser/save",
+                dataType: "json"
+            },
+            parameterMap: function(options, operation) {
+                if (operation !== "read" && options.models) {
+                    return {models: kendo.stringify(options.models)};
+                }
             }
-		})
-	})
+        },
+        schema: {
+            model: {
+            	id: "UserID",
+                fields: {
+                    UserID: { type: "number" },
+                    UserName: { type: "string" }
+                }
+            }
+        }
+    });
 
-	
+    $("#users_manage").kendoDropDownList({
+        filter: "startswith",
+        dataTextField: "UserName",
+        dataValueField: "UserName",
+        dataSource: users_dataSource,
+        noDataTemplate: $("#noDataTemplate").html(),
+        close: users_onClose
+    });
+
+    $("#users").kendoDropDownList({
+        filter: "startswith",
+        dataTextField: "UserName",
+        dataValueField: "UserName",
+        dataSource: users_dataSource,
+        noDataTemplate: $("#noDataTemplate").html()
+    });
+
 });
