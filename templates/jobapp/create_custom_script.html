@@ -126,7 +126,7 @@
            $("#script_save_btn").click(function(){
                script_name = $('input[name="script_name"]').val()
                script_type = $('input[name="script_type"]').filter(":checked").val()
-               script_code = CodeMirrorEditor.getValue()
+               script_code = CodeMirrorEditor.getValue().replace(/[\r\n]/g,"")
                if (script_name == "" || script_type == null || script_code == "") {
                   $("#show_info").modal('show')
                   return false

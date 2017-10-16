@@ -904,21 +904,31 @@ def custom_scripts_all(request):
 @login_required
 def cmd_script_job_execute(request):
     target_hosts = request.POST.get("show_target_hosts")
-    script_id = request.POST.get("cmd_script_name")
-    script_args = request.POST.get("cmd_script_args")
     script_exec_user = request.POST.get("cmd_script_exec_user")
-
+    script_style = request.POST.get("script_style")
     target_hosts_list = target_hosts.split(",")
     target_hosts_num = len(target_hosts_list)
 
-    script_obj = CustomScript.objects.get(id=script_id)
-    script_code = script_obj.script_code
-    script_type = script_obj.script_type
-
     script_dir = "/srv/salt/scripts"
-    script_local_name = "%s_%s_%s"%(request.user,int(time.time()),script_id) + ".%s"%(script_type[0:2])
+
+    # common script
+    if script_style == "common_script":
+        script_id = request.POST.get("cmd_script_name")
+        script_args = request.POST.get("cmd_script_args")
+        script_obj = CustomScript.objects.get(id=script_id)
+        script_code = script_obj.script_code
+        script_type = script_obj.script_type
+        script_local_name = "%s_%s_%s"%(request.user,int(time.time()),script_id) + ".%s"%(script_type[0:2])
+        
+    # temporary script
+    if script_style == "tmp_script":
+        script_args = ""
+        script_code = request.POST.get("editor")
+        script_local_name = "%s_%s"%(request.user,int(time.time())) + ".tmp"
+
+        
     script_local_path = script_dir + os.sep + script_local_name
-    
+
     with open(script_local_path,'w') as file_obj:
         file_obj.write(script_code)
 
