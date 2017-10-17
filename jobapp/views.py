@@ -767,10 +767,10 @@ def shortcut_search_host(request):
     keyWord = request.GET.get("search_key_word")
     
     group_expr = []
-    # if keyWord is hostname
-    group_expr.append("G@nodename:"+keyWord)
     # if keyWord is ip
     group_expr.append("S@"+keyWord)
+    # if keyWord is hostname
+    group_expr.append("G@nodename:"+keyWord)
 
     for tgt_type in group_expr:
         resp = get_salt_group_hosts(tgt_type)
@@ -968,43 +968,6 @@ def del_custom_script(request):
     return JsonResponse({},safe=False)
 
 
-# ------------ for test -----------------------
-
-@login_required
-def test(request):
-    return render(request,'jobapp/test.html',{})
-
-
-@login_required
-def test_read(request):
-    user = request.user
-    username_list = []
-    username_list.append({"UserName":"root"})
-    username_list.append({"UserName":"%s"%user})
-
-    other_users_obj = ExecUser.objects.order_by("id")
-    for user_obj in other_users_obj:
-        username_list.append({"UserName":"%s"%user_obj.user,"UserID":user_obj.id})
-
-    return JsonResponse(username_list,safe=False)
-
-
-@login_required
-def test_create(request):
-    data = request.GET.get("models")
-    data_dict = json.loads(data)
-    print("UserName is %s"%data_dict[0]["UserName"])
-    UserName = data_dict[0]["UserName"]
-
-    user_obj = ExecUser(user=UserName)
-    user_obj.save() 
-
-    print("id is %s"%user_obj.id) 
-
-    return JsonResponse({"UserName":user_obj.user,"UserID":user_obj.id})
-    
-# ----------- test -----------------------------
-    
 # ----------------------
 # FOR DEBUG
 # ----------------------

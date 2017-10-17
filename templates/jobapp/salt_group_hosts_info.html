@@ -205,7 +205,7 @@
                             <tr>
                               <td style="vertical-align: middle;">用户:</td>
                               <td>
-                                <input id="cmd_run_exec_user" name="cmd_run_exec_user" class="exec_user" style="width:200px">
+                                <input id="cmdrun_users" name="cmd_run_exec_user" style="width: 200px;" />
                               </td>
                             </tr>
                             
@@ -237,7 +237,7 @@
                             <tr>
                               <td style="vertical-align: middle;">用户:</td>
                               <td>
-                                <input id="cmd_script_exec_user" name="cmd_script_exec_user" class="exec_user"  style="width:200px">
+                                <input id="cmdscript_users" name="cmd_script_exec_user" style="width: 200px;" />
                               </td>
                             </tr>
 
@@ -387,7 +387,7 @@
 
                                           $(document).ready(function() {
                                               load_files_list()
-                                              load_exec_user_list()
+                                              //load_exec_user_list()
                                               load_script_list()
 
                                               var file_data = $("#source_file").data("kendoDropDownList")
@@ -415,9 +415,30 @@
                                                        $('#job_exec_tip_inter').html("<font color='red'><strong>请选择脚本！</strong></font>")
                                                        return false
                                                    }
+                                                   
+                                                    cmdscript_select_user = $("#cmdscript_users").val()
+                                                    if (cmdscript_select_user == "") {
+                                                        $('#job_exec_tip_inter').html("<font color='red'><strong>请选择执行用户！</strong></font>")
+                                                        return false
+                                                    }
+
                                               })
 
+                                              $('#job_execute').on('shown.bs.modal', function() {
+                                                   $(document).off('focusin.modal');
+                                              });
+
+
+
                                           });
+                                      </script>
+
+                                      <script id="noDataTemplate" type="text/x-kendo-tmpl">
+                                            <div>
+                                                找不到这个用户，你想添加该用户吗 - '#: instance.filterInput.val() #' ?
+                                            </div>
+                                            <br />
+                                            <button class="k-button" onclick="addNew('#: instance.element[0].id #', '#: instance.filterInput.val() #')">add new user</button>
                                       </script>
 
                                  </td>
@@ -531,6 +552,13 @@
               $('#job_exec_tip_inter').html("<font color='red'><strong>请在编辑框输入代码！</strong></font>")
               return false
           }
+
+           cmdscript_select_user = $("#cmdscript_users").val()
+           if (cmdscript_select_user == "") {
+              $('#job_exec_tip_inter').html("<font color='red'><strong>请选择执行用户！</strong></font>")
+              return false
+           }
+
       })    
 
       $('[name="host_detail_btn"]').click(function() {
@@ -620,6 +648,13 @@
               $('#job_exec_tip_inter').html("<font color='red'><strong>含有禁用命令，不能执行！</strong></font>")
               return false
            }
+
+           var cmdrun_select_user = $("#cmdrun_users").val()
+           if (cmdrun_select_user == "") {
+              $('#job_exec_tip_inter').html("<font color='red'><strong>请选择执行用户！</strong></font>")
+              return false
+           }
+
       })
 
 

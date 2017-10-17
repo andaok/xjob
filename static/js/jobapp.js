@@ -101,6 +101,7 @@ $(document).ready(function(){
         }
     });
 
+
     $("#users_manage").kendoDropDownList({
         filter: "startswith",
         dataTextField: "UserName",
@@ -110,7 +111,15 @@ $(document).ready(function(){
         close: users_onClose
     });
 
-    $("#users").kendoDropDownList({
+    $("#cmdrun_users").kendoDropDownList({
+        filter: "startswith",
+        dataTextField: "UserName",
+        dataValueField: "UserName",
+        dataSource: users_dataSource,
+        noDataTemplate: $("#noDataTemplate").html()
+    });
+
+    $("#cmdscript_users").kendoDropDownList({
         filter: "startswith",
         dataTextField: "UserName",
         dataValueField: "UserName",
