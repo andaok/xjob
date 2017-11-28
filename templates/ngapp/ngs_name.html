@@ -1,0 +1,7 @@
+{% if ngs %}
+    {% for item in ngs %}
+        <li>
+            <a class="nav-link" href="{% url 'ngapp:ng' item.id %}">{{item.ng_name}}</a>
+        </li>
+    {% endfor %}
+{% endif %}

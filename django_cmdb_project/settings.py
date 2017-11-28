@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'jobapp',
     'gunicorn',
+    'ngapp',
 ]
 
 MIDDLEWARE = [

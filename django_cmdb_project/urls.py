@@ -20,4 +20,5 @@ from django.conf.urls import include
 urlpatterns = [
     url(r'^jobapp/',include('jobapp.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^ngapp/',include('ngapp.urls')),
 ]

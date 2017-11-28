@@ -1,0 +1,69 @@
+{% extends 'ngapp/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Nginx Summary
+{% endblock %}
+
+{% block main_block%}
+	    <div>
+        <table class="table table-condensed table-striped">
+            <tbody>
+            
+               <tr>
+               	<td colspan="3"><h2>Nginx Summary<h2></td>
+               </tr>
+
+                <tr>
+                	<td>Nginx Name : </td>
+                	<td>{{ng.ng_name}}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                	<td>Nginx Vip : </td>
+                	<td>{{ng.vip}}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                	<td>Nginx Nodes : </td>
+                	<td>{{ng.nodes_ip}}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                	<td>Comment : </td>
+                	<td><pre>{{ng.comment}}</pre></td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                	<td colspan="3"><h3>Nginx Plan Upstreams</h3></td>
+                </tr>
+
+                {% for upstream in upstreams %}
+                	<tr>
+                		<td>{{ forloop.counter }}</td>
+                		<td>{{ upstream.service_site_name}}</td>
+                        <td></td>
+                	</tr>
+                {% endfor %}
+               
+
+                <tr>
+                	<td colspan="3"><h3>Nginx Real Upstream</h3></td>
+                </tr>
+
+
+                {% for upstream in upstream_pool %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ upstream }}</td>
+                        <td>
+                           <a class="btn btn-outline-success my-2 my-sm-0"  role="button"  href="{% url 'ngapp:upstream' ng.ng_name ng.vip upstream %}">Detail</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

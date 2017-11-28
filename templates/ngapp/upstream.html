@@ -1,0 +1,37 @@
+{% extends 'ngapp/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Nginx Upstream Summary
+{% endblock %}
+
+{% block main_block %}
+
+	<div>
+		<h2>{{ng_name}} Upstream {{upstream_name}} Summary</h2>
+		<table class="table table-condensed table-striped">
+			<tr>
+				<td colspan="4"><h4>Upstream Pool Plan Nodes</h4></td>
+			</tr>
+			{% for plan_node in plan_service_nodes %}
+			<tr>
+				<td><input type="checkbox"></td>
+				<td>{{plan_node.0}}</td>
+				<td>{{plan_node.1}}</td>
+				<td>{{plan_node.2}}</td>
+			</tr>
+			{% endfor %}
+		<tr>
+				<td colspan="4">
+					<a class="btn btn-outline-success my-2 my-sm-0"  role="button"  href="#">发布</a>
+					<a class="btn btn-outline-success my-2 my-sm-0"  role="button"  href="#">回滚</a>
+					<a class="btn btn-outline-success my-2 my-sm-0"  role="button"  href="#">增加</a>
+				</td>
+		</tr>
+		</table>
+	</div>
+	<div>
+		<h2>{{ng_name}} Upstream {{upstream_name}} Summary</h2>
+		
+	</div>
+{% endblock %}
