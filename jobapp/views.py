@@ -774,6 +774,7 @@ def shortcut_search_host(request):
 
     for tgt_type in group_expr:
         resp = get_salt_group_hosts(tgt_type)
+        resp = {key:value for key,value in resp.iteritems() if value}
         if resp:
             break
         else:
