@@ -611,6 +611,7 @@ def salt_group_hosts_info(request):
     group_expr = group_obj.GroupExpr
     
     resp = get_salt_group_hosts(group_expr)
+    resp = {key:value for key,value in resp.iteritems() if value}
 
     hosts_list = []
 
